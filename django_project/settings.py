@@ -1,13 +1,19 @@
+from email.policy import default
 from pathlib import Path
-from telnetlib import AUTHENTICATION
+from environs import Env
+
+
+env = Env()
+env.read_env()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-w#he9#nzv-sq6_y1dd((lo33c7ad=eoos1jj-5)2uu-y7siz4#'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
-DEBUG = True
+DEBUG = env.bool('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
 
 INSTALLED_APPS = [
@@ -61,14 +67,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+    'default': env.dj_db_url(
+        'DATABASE_URL',
+        default='postgres://postgres@db/postgres'
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
