@@ -118,7 +118,14 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.str('DJANGO_EMAIL_HOST')
+EMAIL_HOST_USER = env.str('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_PORT = int(env.str('DJANGO_EMAIL_PORT'))
+EMAIL_USE_TLS = env.bool('DJANGO_EMAIL_USE_TLS', default=True)
+
+
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_USERNAME_REQUIRED = False
